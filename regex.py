@@ -5,7 +5,7 @@ import pymongo
 #Import python web framework:
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-#other dependencies : dnspython
+#other dependencies : dnspython, gunicorn
 
 #setup API:
 app = Flask(__name__)
