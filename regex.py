@@ -156,6 +156,7 @@ class backEnd(Resource):
             return "ERROR!", 404
 
 api.add_resource(backEnd, "/api/<string:userInput>")
-app.run()
+if __name__ == "__main__":
+    app.run(debug=False)
 #if __name__ == "__main__":
 #   app.run()
