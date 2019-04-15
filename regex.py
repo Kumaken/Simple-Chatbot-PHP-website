@@ -1,7 +1,25 @@
 #Import Regular Expression Module:
-import re,random, pymongo
+import re,random
+#Import noSQL database module:
+import pymongo
+#Import python web framework:
+from flask import Flask
+from flask_restful import Api, Resource, reqparse
+#other dependencies : dnspython
 
-#dependencies : dnspython
+#setup API:
+app = Flask(__name__)
+api = Api(app)
+
+class backEnd(Resource):
+    def get(self, userInput):
+        try:
+            return handleReply(regexMatch(userInput)), 200
+        except:
+            return "ERROR!", 404
+
+api.add_resource(backEnd, "/api/<string:userInput>")
+
 #setup mongodb:
 myclient =pymongo.MongoClient("mongodb+srv://randomguy:test123@vueexpress-miieb.mongodb.net/test?retryWrites=true")
 test = myclient.test
@@ -116,21 +134,24 @@ def teachNLP():
                 "intent"    :   newIntent,
                 "replies"   :   newReplies
             })
-        print("RenitoBOT: ok cayank, makasih yaaa, sini aku ciyumm muahhh")
+        print("RenitoBOT: ok cayank, makasih yaaa :3")
     else:
         print("RenitoBOT: Dasar anak bego gak tau diri")
 
 
 #DRIVER:
-message = ""
-while(message != "exit"):
-    """
-    for entry in intentStrategyCursor:
-        print(entry) 
-    intentStrategyCursor.rewind() """
-    message = input(">")
-    print("RenitoBOT:", handleReply(regexMatch(message)) )
-    
+def main():
+    message = ""
+    while(message != "exit"):
+        #app.run(debug=True)
+        """
+        for entry in intentStrategyCursor:
+            print(entry) 
+        intentStrategyCursor.rewind() """
+        message = input(">")
+        print("RenitoBOT:", handleReply(regexMatch(message)) )
+        
 
-
+#RUN MAIN PROGRAM:
+main()
 
