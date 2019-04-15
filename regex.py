@@ -171,8 +171,12 @@ class backEnd(Resource):
     
     def put(self, userInput):
         #try:
-        intentStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'regexes': request.json["newRegexes"]}})
-        replyStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'replies': request.json["newReplies"]}})
+        newRegexes = request.json["newRegexes"]
+        for regex in newRegexes:
+            intentStrategyDB.update_one({'intent': userInput}, {'$push': {'regexes': regex }}, upsert=True)
+        newReplies = request.json["newReplies"]
+        for reply in newReplies:
+            replyStrategyDB.update_one({'intent': userInput}, {'$push': {'replies': reply }}, upsert=True)
         """except:
             return "eh?!", 404"""
 
@@ -213,8 +217,8 @@ api.add_resource(backEnd, "/api/<string:userInput>")
 api.add_resource(queryDatabase, "/query/<string:userInput>")
 api.add_resource(viewDatabase, "/view")
 # LOCALHOST:
-#app.run(debug=True)
+app.run(debug=True)
 #LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku (cause already run on gunicorn)
-if __name__ == "__main__":
-    app.run(debug=False)
+"""if __name__ == "__main__":
+    app.run(debug=False)""" 
 

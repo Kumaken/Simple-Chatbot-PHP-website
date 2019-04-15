@@ -2,9 +2,9 @@ import requests
 
 #URL:
 # localhost:
-#url = "http://127.0.0.1:5000/"
+url = "http://127.0.0.1:5000/"
 # server:
-url = "https://python-nlp-chatbot.herokuapp.com/"
+#url = "https://python-nlp-chatbot.herokuapp.com/"
 
 def teachNLP():
     global url
@@ -46,8 +46,8 @@ def teachNLP():
                 "replies"   :   newReplies
             }
             newData = [newIntentStrategy, newReplyStrategy]
-            print(requests.post(url+"api/intentStrategy", json=newIntentStrategy))
-            print(requests.post(url+"api/replyStrategy", json=newReplyStrategy))
+            requests.post(url+"api/intentStrategy", json=newIntentStrategy)
+            requests.post(url+"api/replyStrategy", json=newReplyStrategy)
         print("RenitoBOT: ok cayank, makasih yaaa :3")
     else:
         print("RenitoBOT: Dasar anak bego gak tau diri")
@@ -55,7 +55,7 @@ def teachNLP():
 def viewDatabase():
     return requests.get(url+"view").text
 def deleteEntry(intent):
-    return requests.delete(url+"query/"+intent)
+    return requests.delete(url+"query/"+intent).text
 
 def main():
     message = ""
