@@ -19,6 +19,8 @@ class backEnd(Resource):
             return "ERROR!", 404
 
 api.add_resource(backEnd, "/api/<string:userInput>")
+if __name__ == "__main__":
+    app.run()
 
 #setup mongodb:
 myclient =pymongo.MongoClient("mongodb+srv://randomguy:test123@vueexpress-miieb.mongodb.net/test?retryWrites=true")
