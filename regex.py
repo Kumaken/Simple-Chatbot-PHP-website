@@ -145,7 +145,7 @@ main()
 """
 
 #setup API:
-app = Flask(__name__)
+app = Flask(__name__) #encapsulation IS NECESSARY
 api = Api(app)
 
 class backEnd(Resource):
@@ -156,7 +156,8 @@ class backEnd(Resource):
             return "ERROR!", 404
 
 api.add_resource(backEnd, "/api/<string:userInput>")
+
+#LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku
 if __name__ == "__main__":
     app.run(debug=False)
-#if __name__ == "__main__":
-#   app.run()
+
