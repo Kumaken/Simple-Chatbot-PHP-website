@@ -3,8 +3,11 @@ import re,random
 #Import noSQL database module:
 import pymongo
 #Import python web framework:
-from flask import Flask
+from flask import Flask,request
 from flask_restful import Api, Resource, reqparse
+#Import catch stdout:
+from io import StringIO
+import sys
 #other dependencies : dnspython, gunicorn
 
 #setup mongodb:
@@ -78,14 +81,11 @@ def regexMatch(message):
     return None
 
 def handleReply(_intent):
-    try:
-        # DEBUGGER: print("intent is : ",_intent)
-        replyDict = replyStrategyDB.find_one({"intent" : _intent})
-        return random.choice(replyDict["replies"])
-    except:
-        teachNLP()
-        return "OK. Lanjuts"
-    
+    # DEBUGGER: print("intent is : ",_intent)
+    replyDict = replyStrategyDB.find_one({"intent" : _intent})
+    return random.choice(replyDict["replies"])
+
+"""
 def teachNLP():
     print("RenitoBOT: Aku gak ngerti lho, kamu mau ngomong apa cayank...")
     proceed = input("RenitoBOT: Ajarin boleh? (y/n) :")
@@ -124,7 +124,7 @@ def teachNLP():
         print("RenitoBOT: ok cayank, makasih yaaa :3")
     else:
         print("RenitoBOT: Dasar anak bego gak tau diri")
-
+"""
 
 #DRIVER:
 """
@@ -155,9 +155,66 @@ class backEnd(Resource):
         except:
             return "ERROR!", 404
 
-api.add_resource(backEnd, "/api/<string:userInput>")
+    def post(self, userInput):
+        try:
+            data = request.get_json()
+            print(data)
+            if userInput == "intentStrategy":
+                print("inserted intent")
+                intentStrategyDB.insert_one(data)
+            else: #replyStrategy
+                print("inserted reply")
+                replyStrategyDB.insert_one(data)
+            return "POST success", 200
+        except:
+            return "eh?!", 404
+    
+    def put(self, userInput):
+        try:
+            intentStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'regexes': request.json["newRegexes"]}})
+            replyStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'replies': request.json["newReplies"]}})
+        except:
+            return "eh?!", 404
 
-#LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku
+class queryDatabase(Resource):
+    def get(self, userInput):
+        try:
+            found = intentStrategyDB.find_one({"intent" : userInput}) != None
+            return found, 200
+        except:
+            return "ERROR!", 404
+
+    def delete(self, userInput):
+        try:
+            intentStrategyDB.delete_one({"intent" : userInput})
+            replyStrategyDB.delete_one({"intent" : userInput})
+            return "DONE", 200
+        except:
+            return "ERROR!", 404
+
+class viewDatabase(Resource):
+    def get(self):
+        #old_stdout = sys.stdout
+        #sys.stdout = mystdout = StringIO() #capture stdout to mystdout
+        cur1 = intentStrategyDB.find()
+        for entry in cur1:
+            print(entry)
+            print()
+        print("\n-------------------------------------\n") 
+        cur2 = replyStrategyDB.find()
+        for entry in cur2:
+            print(entry)
+            print()
+        #sys.stdout = old_stdout #restore stdout
+        #return mystdout.getvalue(), 200
+        return "DONE", 200
+
+api.add_resource(backEnd, "/api/<string:userInput>")
+api.add_resource(queryDatabase, "/query/<string:userInput>")
+api.add_resource(viewDatabase, "/view")
+# LOCALHOST:
+#app.run(debug=True)
+#LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku (cause already run on gunicorn)
 if __name__ == "__main__":
     app.run(debug=False)
 
