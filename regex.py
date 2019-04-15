@@ -170,11 +170,11 @@ class backEnd(Resource):
             return "eh?!", 404
     
     def put(self, userInput):
-        try:
-            intentStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'regexes': request.json["newRegexes"]}})
-            replyStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'replies': request.json["newReplies"]}})
-        except:
-            return "eh?!", 404
+        #try:
+        intentStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'regexes': request.json["newRegexes"]}})
+        replyStrategyDB.update_one({'intent': userInput}, {'$pushAll': {'replies': request.json["newReplies"]}})
+        """except:
+            return "eh?!", 404"""
 
 class queryDatabase(Resource):
     def get(self, userInput):
