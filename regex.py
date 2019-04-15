@@ -217,8 +217,8 @@ api.add_resource(backEnd, "/api/<string:userInput>")
 api.add_resource(queryDatabase, "/query/<string:userInput>")
 api.add_resource(viewDatabase, "/view")
 # LOCALHOST:
-app.run(debug=True)
+#app.run(debug=True)
 #LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku (cause already run on gunicorn)
-"""if __name__ == "__main__":
-    app.run(debug=False)""" 
+if __name__ == "__main__":
+    app.run(debug=False) 
 
