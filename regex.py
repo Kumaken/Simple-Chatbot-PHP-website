@@ -7,21 +7,6 @@ from flask import Flask
 from flask_restful import Api, Resource, reqparse
 #other dependencies : dnspython, gunicorn
 
-#setup API:
-app = Flask(__name__)
-api = Api(app)
-
-class backEnd(Resource):
-    def get(self, userInput):
-        try:
-            return handleReply(regexMatch(userInput)), 200
-        except:
-            return "ERROR!", 404
-
-api.add_resource(backEnd, "/api/<string:userInput>")
-if __name__ == "__main__":
-    app.run()
-
 #setup mongodb:
 myclient =pymongo.MongoClient("mongodb+srv://randomguy:test123@vueexpress-miieb.mongodb.net/test?retryWrites=true")
 test = myclient.test
@@ -142,18 +127,35 @@ def teachNLP():
 
 
 #DRIVER:
+"""
 def main():
     message = ""
     while(message != "exit"):
         #app.run(debug=True)
-        """
-        for entry in intentStrategyCursor:
-            print(entry) 
-        intentStrategyCursor.rewind() """
+        
+        #for entry in intentStrategyCursor:
+            #print(entry) 
+        #intentStrategyCursor.rewind()
         message = input(">")
         print("RenitoBOT:", handleReply(regexMatch(message)) )
         
 
 #RUN MAIN PROGRAM:
 main()
+"""
 
+#setup API:
+app = Flask(__name__)
+api = Api(app)
+
+class backEnd(Resource):
+    def get(self, userInput):
+        try:
+            return handleReply(regexMatch(userInput)), 200
+        except:
+            return "ERROR!", 404
+
+api.add_resource(backEnd, "/api/<string:userInput>")
+app.run()
+#if __name__ == "__main__":
+#   app.run()
