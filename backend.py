@@ -78,6 +78,7 @@ intentStrategyCursor2 = intentStrategyDB2.find() #points to first entry
 
 def stringMatch(message, algoType):
     message = unquote(message)
+    print("MESSAGE GOTTEN:",message)
     if(algoType == "regex"):
         for intent in intentStrategyCursor:
             # DEBUGGER: print("test1:" ,intent)
