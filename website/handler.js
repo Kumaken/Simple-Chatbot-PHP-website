@@ -1,6 +1,6 @@
 $( document ).ready(function() {
-    $("form#teachform input").toggle();
-    $("form#teachform label").toggle();
+    $("form#teachform input").hide();
+    $("form#teachform label").hide();
 });
 
 
@@ -9,7 +9,7 @@ $(document).ready(function() {
         $('#answer').text("loading");
         // Algorithm type:
         var algotype = document.getElementById('algopick').value;
-        alert(algotype);
+        //alert(algotype);
         // Serialize the data in the form
         var serializedData = $("#inputform").serialize();
         //alert(serializedData);
@@ -27,6 +27,8 @@ $(document).ready(function() {
             success: function(data)
             {   
                 //alert(data);
+                $("form#teachform input").hide();
+                $("form#teachform label").hide();
                 $('#answer').text(JSON.stringify(data));
             },
             error: function(jqXHR, data, errorThrown ){
@@ -47,8 +49,16 @@ $(document).ready(function() {
                     },
                     success: function(data)
                     {   
-                        $("form#teachform input").toggle();
-                        $("form#teachform label").toggle();
+                        $("form#teachform input").show();
+                        $("form#teachform label").show();
+                        if(algotype == "regex"){
+                            $("#patterns").hide();
+                            $("#patternlabel").hide();
+                        }
+                        else{
+                            $("#regexes").hide();
+                            $("#regexlabel").hide();
+                        }
                     },
                     error: function(jqXHR, data, errorThrown ){
                         //alert("jqXHR = "+JSON.stringify(jqXHR));
@@ -64,8 +74,8 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $("#teachform").submit(function(e) {
-        $("form#teachform input").toggle();
-        $("form#teachform label").toggle();
+        $("form#teachform input").hide();
+        $("form#teachform label").hide();
         alert("Thanks udah ajarin aku <3");
     })
 });

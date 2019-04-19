@@ -23,7 +23,8 @@
     <br>
     <form name = "teachform" id="teachform" action = "<?php $_PHP_SELF ?>" method = "POST">
         <label>Intent:</label><input id="intent" type="text" name="intent"><br><br>
-        <label>Regexes:</label><input id="regexes" type="text" name="regexes"><br><br>
+        <label id ="regexlabel">Regexes:</label><input id="regexes" type="text" name="regexes"><br><br>
+        <label id ="patternlabel">Patterns:</label><input id="patterns" type="text" name="patterns"><br><br>
         <label>Replies:</label><input id="replies" type="text" name="replies"> 
         <input type = "submit" id = "submitButton" /><br>
     </form>
