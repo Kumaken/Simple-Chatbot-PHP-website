@@ -7,6 +7,9 @@ from flask import Flask,request
 from flask_restful import Api, Resource, reqparse
 #Import catch stdout:
 from io import StringIO
+#urllib2: for url sentences:
+from urllib.parse import unquote
+
 import sys
 #other dependencies : dnspython, gunicorn
 
@@ -74,6 +77,7 @@ intentStrategyCursor2 = intentStrategyDB2.find() #points to first entry
 #regex func:
 
 def stringMatch(message, algoType):
+    message = unquote(message)
     if(algoType == "regex"):
         for intent in intentStrategyCursor:
             # DEBUGGER: print("test1:" ,intent)
@@ -204,6 +208,8 @@ api.add_resource(viewDatabase, "/view")
 # LOCALHOST:
 #app.run(debug=True)
 #LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku (cause already run on gunicorn)
+# test url unquoting:
+print( unquote("/api/regex/crush%20you"))
 if __name__ == "__main__":
     app.run(debug=False) 
 

@@ -16,7 +16,7 @@ $(document).ready(function() {
         e.preventDefault();
         let base_url = 'https://python-nlp-chatbot.herokuapp.com/api/'
         $.ajax({                
-            url: encodeURI(base_url+algotype+'/'+$('form').serializeArray()[0].value), 
+            url: encodeURIComponent(base_url+algotype+'/'+$('form').serializeArray()[0].value), 
             type: 'GET',
             cache: true,
             crossDomain: true,

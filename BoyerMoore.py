@@ -40,6 +40,7 @@ def BoyerMooreMatching (text,pattern) :
     return -1
 
 ##Test Program
+"""
 text = "AzharDhiaulhaq"
 pattern = "Dhia"
 posn = BoyerMooreMatching(text,pattern)
@@ -47,3 +48,4 @@ if (posn == -1) :
     print("Pattern not found")
 else :
     print("Persentase : ", posn*100)
+"""
