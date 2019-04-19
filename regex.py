@@ -180,6 +180,7 @@ class backEnd(Resource):
         """except:
             return "eh?!", 404"""
 
+
 class queryDatabase(Resource):
     def get(self, userInput):
         try:
