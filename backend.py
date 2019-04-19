@@ -133,13 +133,13 @@ app = Flask(__name__) #encapsulation IS NECESSARY
 api = Api(app)
 
 class backEnd(Resource):
-    def get(self, algoType, userInput):
+    def get(self, userInput, algoType):
         try:
-            return handleReply(stringMatch(userInput)), 200
+            return handleReply(stringMatch(userInput, algoType)), 200
         except:
             return "ERROR!", 404
 
-    def post(self, algoType, userInput):
+    def post(self, userInput, algoType):
         try:
             data = request.get_json()
             print(data)
@@ -153,7 +153,7 @@ class backEnd(Resource):
         except:
             return "eh?!", 404
     
-    def put(self, algoType, userInput):
+    def put(self, userInput, algoType):
         #try:
         newRegexes = request.json["newRegexes"]
         for regex in newRegexes:
