@@ -155,22 +155,37 @@ class backEnd(Resource):
             if userInput == "intentStrategy":
                 print("inserted intent")
                 intentStrategyDB.insert_one(data)
+            elif userInput == "intentStrategy2":
+                intentStrategyDB2.insert_one(data)
             else: #replyStrategy
                 print("inserted reply")
-                replyStrategyDB.insert_one(data)
+                if replyStrategyDB.find_one({"intent" : data["intent"]}) != None:
+                    for reply in data["replies"]:
+                        replyStrategyDB.update_one({'intent': data["intent"]}, {'$push': {'replies': reply }}, upsert=True)
+                else:
+                    replyStrategyDB.insert_one(data)
+            
             return "POST success", 200
         except:
             return "eh?!", 404
     
     def put(self, userInput, algoType):
         #try:
-        newRegexes = request.json["newRegexes"]
-        for regex in newRegexes:
-            intentStrategyDB.update_one({'intent': userInput}, {'$push': {'regexes': regex }}, upsert=True)
-        newReplies = request.json["newReplies"]
-        for reply in newReplies:
-            replyStrategyDB.update_one({'intent': userInput}, {'$push': {'replies': reply }}, upsert=True)
-        """except:
+        if algoType == "regex":
+            newRegexes = request.json["newRegexes"]
+            for regex in newRegexes:
+                intentStrategyDB.update_one({'intent': userInput}, {'$push': {'regexes': regex }}, upsert=True)
+            newReplies = request.json["newReplies"]
+            for reply in newReplies:
+                replyStrategyDB.update_one({'intent': userInput}, {'$push': {'replies': reply }}, upsert=True)
+        else:
+            newPatterns = request.json["newPatterns"]
+            for pattern in newPatterns:
+                intentStrategyDB2.update_one({'intent': userInput}, {'$push': {'patterns': pattern }}, upsert=True)
+            newReplies = request.json["newReplies"]
+            for reply in newReplies:
+                replyStrategyDB.update_one({'intent': userInput}, {'$push': {'replies': reply }}, upsert=True)
+            """except:
             return "eh?!", 404"""
 
 

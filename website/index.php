@@ -38,9 +38,13 @@
     //echo nl2br("\r\nBodoh!\r\n");
    }*/
 
-    if( $_POST["intent"] && $_POST["regexes"] && $_POST["replies"] ) {
+    if( $_POST["intent"] && ($_POST["regexes"] || $_POST["patterns"])  && $_POST["replies"] ) {
         //intent:
         //echo $_POST["intent"];
+
+        //for patterns:
+        $data = $_POST["patterns"];
+        $data_arr0 = explode(',', $data); // explode the string from commas
 
         //for regexes:
         $data = $_POST["regexes"];
@@ -58,13 +62,28 @@
         //echo nl2br("$intentQueryURL\r\n");
         $intentFound = file_get_contents($intentQueryURL);
         //echo $intentFound;
+        
+        
 
         if ($intentFound == "true\n"){
             echo nl2br("Menambah ke existing diction! DONE!");
-            $finalData["newRegexes"] = $data_arr;
-            $finalData["newReplies"] = $data_arr2;
-            $jsonData = json_encode($finalData);
-            //echo nl2br("$jsonData\r\n");
+            if(empty($data_arr0)){
+                //untuk dict1:
+                $finalData["newRegexes"] = $data_arr;
+                $finalData["newReplies"] = $data_arr2;
+                $jsonData = json_encode($finalData);
+                //which url to update:
+                $putURL = $base_url.'api/regex/'.urlencode($_POST["intent"]);
+            }
+            else{
+                //untuk dict2:
+                $finalData["newPatterns"] = $data_arr0;
+                $finalData["newReplies"] = $data_arr2;
+                $jsonData = json_encode($finalData);
+                //echo nl2br("$jsonData\r\n");
+                //which url to update:
+                $putURL = $base_url.'api/pattern/'.urlencode($_POST["intent"]);
+            }
 
             //sending put request:
             //The URL that we want to send a PUT request to.
@@ -72,7 +91,7 @@
             
             //Initiate cURL   
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $base_url.'api/'.urlencode($_POST["intent"]));
+            curl_setopt($ch, CURLOPT_URL, $putURL);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($jsonData)));
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($ch, CURLOPT_POSTFIELDS,$jsonData);
@@ -83,9 +102,18 @@
         }
         else{
             echo nl2br("\r\nNew diksi! LEARNED!\r\n");
-            $newIntentStrat["intent"] = $_POST["intent"];
-            $newIntentStrat["regexes"] = $data_arr;
-            $jsonIntentStrat= json_encode($newIntentStrat);
+            if(empty($data_arr0)){
+                $newIntentStrat["intent"] = $_POST["intent"];
+                $newIntentStrat["regexes"] = $data_arr;
+                $jsonIntentStrat= json_encode($newIntentStrat);
+                $post_URL='api/intentStrategy';
+            }
+            else{
+                $newIntentStrat["intent"] = $_POST["intent"];
+                $newIntentStrat["patterns"] = $data_arr0;
+                $jsonIntentStrat= json_encode($newIntentStrat);
+                $post_URL='api/intentStrategy2';
+            }
             $newReplyStrat["intent"] = $_POST["intent"];
             $newReplyStrat["replies"] = $data_arr2;
             $jsonReplyStrat= json_encode($newReplyStrat);
@@ -94,7 +122,7 @@
 
             //post intent strat:
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $base_url.'api/intentStrategy');
+            curl_setopt($ch, CURLOPT_URL, $base_url.$post_URL);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS,$jsonIntentStrat);

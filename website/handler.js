@@ -15,8 +15,9 @@ $(document).ready(function() {
         //alert(serializedData);
         e.preventDefault();
         let base_url = 'https://python-nlp-chatbot.herokuapp.com/api/'
+        //alert(encodeURIComponent($('form').serializeArray()[0].value))
         $.ajax({                
-            url: encodeURIComponent(base_url+algotype+'/'+$('form').serializeArray()[0].value), 
+            url: base_url+algotype+'/'+encodeURIComponent($('form').serializeArray()[0].value), 
             type: 'GET',
             cache: true,
             crossDomain: true,
@@ -36,7 +37,7 @@ $(document).ready(function() {
                 //TEACHING BEGINS:
                 $('#answer').text("Aku gak ngerti...");
                 $.ajax({                
-                    url: encodeURI('http://localhost:8000/index.php'), 
+                    url: 'http://localhost:8000/index.php', 
                     type: 'GET',
                     cache: true,
                     data: serializedData,
