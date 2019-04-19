@@ -77,7 +77,7 @@ intentStrategyCursor2 = intentStrategyDB2.find() #points to first entry
 #regex func:
 
 def stringMatch(message, algoType):
-    message = unquote(message)
+    message = message.replace("%20"," ")
     print("MESSAGE GOTTEN:",message)
     if(algoType == "regex"):
         for intent in intentStrategyCursor:
