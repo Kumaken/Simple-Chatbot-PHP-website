@@ -97,6 +97,7 @@ def stringMatch(message, algoType):
                 # DEBUGGER: print("test:" ,regex)
                 temp = BoyerMooreMatching(message, pattern)
                 if temp > max[0]:
+                    print( temp , " >< ", max[0])
                     #switch intent & percentage of likeliness:
                     max[0] = temp
                     max[1] = intent
@@ -198,6 +199,11 @@ class viewDatabase(Resource):
         for entry in cur2:
             print(entry)
             print()
+        print("\n-------------------------------------\n") 
+        cur3 = intentStrategyDB2.find()
+        for entry in cur3:
+            print(entry)
+            print()
         #sys.stdout = old_stdout #restore stdout
         #return mystdout.getvalue(), 200
         return "DONE", 200
@@ -205,11 +211,11 @@ class viewDatabase(Resource):
 api.add_resource(backEnd, "/api/<string:algoType>/<string:userInput>")
 api.add_resource(queryDatabase, "/query/<string:userInput>")
 api.add_resource(viewDatabase, "/view")
-# LOCALHOST:
+# LOCALHOST:    
 #app.run(debug=True)
 #LESSON : if __name __ == "__main__" IS MANDATORY or else you will get address already used error on heroku (cause already run on gunicorn)
 # test url unquoting:
-print( unquote("/api/regex/crush%20you"))
+# print( unquote("/api/regex/crush%20you"))
 if __name__ == "__main__":
     app.run(debug=False) 
 
