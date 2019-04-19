@@ -100,7 +100,7 @@ def stringMatch(message, algoType):
                     print( temp , " >< ", max[0])
                     #switch intent & percentage of likeliness:
                     max[0] = temp
-                    max[1] = intent
+                    max[1] = intent["intent"]
         #reset cursor:
         intentStrategyCursor2.rewind()
         #return result:

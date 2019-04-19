@@ -24,6 +24,7 @@ intentStrategy2IN1 = {
     "intent"    :   "greet",
     "patterns"   :   ( "halo, siapa namamu?",
                       "kamu siapa?",
-                      "selamat pagi" )
+                      "selamat pagi",
+                      "halo" )
 }
 intentStrategyDB2.insert_one(intentStrategy2IN1)
