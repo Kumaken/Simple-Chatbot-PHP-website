@@ -7,14 +7,16 @@ $( document ).ready(function() {
 $(document).ready(function() {
     $("#inputform").submit(function(e) {
         $('#answer').text("loading");
+        // Algorithm type:
+        var algotype = document.getElementById('algopick').value;
+        alert(algotype);
         // Serialize the data in the form
         var serializedData = $("#inputform").serialize();
         //alert(serializedData);
         e.preventDefault();
-        let urltxt = 'https://python-nlp-chatbot.herokuapp.com/api/'+$('form').serializeArray()[0].value;
-        //alert(urltxt);
+        let base_url = 'https://python-nlp-chatbot.herokuapp.com/api/'
         $.ajax({                
-            url: encodeURI(urltxt), 
+            url: encodeURI(base_url+algotype+'/'+$('form').serializeArray()[0].value), 
             type: 'GET',
             cache: true,
             crossDomain: true,

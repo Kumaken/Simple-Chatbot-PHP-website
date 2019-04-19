@@ -10,6 +10,10 @@ from io import StringIO
 import sys
 #other dependencies : dnspython, gunicorn
 
+#algorithm inclueds:
+#BOYERMORE:
+from BoyerMoore import BoyerMooreMatching,BuildLast
+
 #setup mongodb:
 myclient =pymongo.MongoClient("mongodb+srv://randomguy:test123@vueexpress-miieb.mongodb.net/test?retryWrites=true")
 test = myclient.test
@@ -17,9 +21,11 @@ test = myclient.test
 nlpData = myclient["NLPStrategy"] #create database
 #create collection:
 intentStrategyDB = nlpData["intentStrategy"] #intent-expression dict:
+intentStrategyDB2 = nlpData["intentStrategy2"] #intent-expression for KMP&BM dict:
 replyStrategyDB = nlpData["replyStrategy"] #intent-reply dict:
 
 #initial insert:
+"""
 intentStrategyIN1 = {
     "intent"    :   "greet",
     "regexes"   :   ( "(.*)halo(.*)",
@@ -47,6 +53,7 @@ replyStrategyIN2 = {
                       "iiiih baru sebentar udah kangen nih",
                       "pergi lu jink" )
 }
+"""
 #intentStrategyDB.delete_many({})
 #replyStrategyDB.delete_many({})
 #intentStrategyDB.delete_one({"intent" : "insult"})
@@ -58,6 +65,7 @@ replyStrategyIN2 = {
 
 #get the database:
 intentStrategyCursor = intentStrategyDB.find() #points to first entry
+intentStrategyCursor2 = intentStrategyDB2.find() #points to first entry
 """for entry in intentStrategyCursor:
     print(entry)"""
 #print (objMongo)
@@ -65,19 +73,35 @@ intentStrategyCursor = intentStrategyDB.find() #points to first entry
 #print(intentStrategy)
 #regex func:
 
-def regexMatch(message):
-    for intent in intentStrategyCursor:
-        # DEBUGGER: print("test1:" ,intent)
-        for regex in intent["regexes"]:
-            # DEBUGGER: print("test:" ,regex)
-            isMatch = re.match(regex, message)
-            if isMatch:
-                # DEBUGGER: print("regex matches: ", isMatch.group())
-                intentStrategyCursor.rewind()
-                return intent["intent"]
+def stringMatch(message, algoType):
+    if(algoType == "regex"):
+        for intent in intentStrategyCursor:
+            # DEBUGGER: print("test1:" ,intent)
+            for regex in intent["regexes"]:
+                # DEBUGGER: print("test:" ,regex)
+                isMatch = re.match(regex, message)
+                if isMatch:
+                    # DEBUGGER: print("regex matches: ", isMatch.group())
+                    intentStrategyCursor.rewind()
+                    return intent["intent"]
+        intentStrategyCursor.rewind()
+    elif(algoType == "bm" or algoType == "kmp"):
+        max = [-999,"nullintent"]
+        for intent in intentStrategyCursor2:
+            # DEBUGGER: print("test1:" ,intent)
+            for pattern in intent["patterns"]:
+                # DEBUGGER: print("test:" ,regex)
+                temp = BoyerMooreMatching(message, pattern)
+                if temp > max[0]:
+                    #switch intent & percentage of likeliness:
+                    max[0] = temp
+                    max[1] = intent
         #reset cursor:
+        intentStrategyCursor2.rewind()
+        #return result:
+        return max[1]
+    
     #not matched at all
-    intentStrategyCursor.rewind()
     return None
 
 def handleReply(_intent):
@@ -85,46 +109,6 @@ def handleReply(_intent):
     replyDict = replyStrategyDB.find_one({"intent" : _intent})
     return random.choice(replyDict["replies"])
 
-"""
-def teachNLP():
-    print("RenitoBOT: Aku gak ngerti lho, kamu mau ngomong apa cayank...")
-    proceed = input("RenitoBOT: Ajarin boleh? (y/n) :")
-    if proceed.lower() == "y":
-        newIntent = input("RenitoBOT: kamu tuh sebenarnya ngomong tentang apa? (intent) :")
-        newIntent = newIntent.lower()
-        print("RenitoBOT: trus kata kunci-nya apa saja? aku gak bisa mikir nih! (input stops when empty string is received) (regexes)")
-        newRegexes = []
-        temp = "x"
-        while(temp!= ""):
-            temp = input()
-            if temp != "":
-                newRegexes.append("(.*)"+temp.lower()+"(.*)")
-        newReplies = []
-        print("RenitoBOT: trus kamu mau direply apa saja? (input stops when empty string is received) (reply)")
-        temp = "x"
-        while(temp!= ""):
-            temp = input()
-            if temp != "":
-                newReplies.append(temp)
-        print("RenitoBOT: Ok thank you udah ngajarin aku cayank, sebentar ya aku masukin ke dengkul dlu")
-        if (intentStrategyDB.find_one({"intent" : newIntent}) != None):
-            print("RenitoBOT: Eh udah ada ternyata, add to my kamus!")
-            intentStrategyDB.update_one({'intent': newIntent}, {'$pushAll': {'regexes': newRegexes}})
-            replyStrategyDB.update_one({'intent': newIntent}, {'$pushAll': {'replies': newReplies}})
-        else:
-            print("RenitoBOT: Adding new kamus!")
-            intentStrategyDB.insert_one({
-                "intent"    :   newIntent,
-                "regexes"   :   newRegexes
-            })
-            replyStrategyDB.insert_one({
-                "intent"    :   newIntent,
-                "replies"   :   newReplies
-            })
-        print("RenitoBOT: ok cayank, makasih yaaa :3")
-    else:
-        print("RenitoBOT: Dasar anak bego gak tau diri")
-"""
 
 #DRIVER:
 """
@@ -137,7 +121,7 @@ def main():
             #print(entry) 
         #intentStrategyCursor.rewind()
         message = input(">")
-        print("RenitoBOT:", handleReply(regexMatch(message)) )
+        print("RenitoBOT:", handleReply(stringMatch(message)) )
         
 
 #RUN MAIN PROGRAM:
@@ -149,13 +133,13 @@ app = Flask(__name__) #encapsulation IS NECESSARY
 api = Api(app)
 
 class backEnd(Resource):
-    def get(self, userInput):
+    def get(self, algoType, userInput):
         try:
-            return handleReply(regexMatch(userInput)), 200
+            return handleReply(stringMatch(userInput)), 200
         except:
             return "ERROR!", 404
 
-    def post(self, userInput):
+    def post(self, algoType, userInput):
         try:
             data = request.get_json()
             print(data)
@@ -169,7 +153,7 @@ class backEnd(Resource):
         except:
             return "eh?!", 404
     
-    def put(self, userInput):
+    def put(self, algoType, userInput):
         #try:
         newRegexes = request.json["newRegexes"]
         for regex in newRegexes:
@@ -214,7 +198,7 @@ class viewDatabase(Resource):
         #return mystdout.getvalue(), 200
         return "DONE", 200
 
-api.add_resource(backEnd, "/api/<string:userInput>")
+api.add_resource(backEnd, "/api/<string:algoType>/<string:userInput>")
 api.add_resource(queryDatabase, "/query/<string:userInput>")
 api.add_resource(viewDatabase, "/view")
 # LOCALHOST:

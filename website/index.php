@@ -6,6 +6,15 @@
     <script src="handler.js"></script>
 </head>
 <body>
+
+    <label>Which Algorithm:</label>
+    <input list="algo" type="text" id="algopick">
+    <datalist id="algo">
+        <option value="regex"> </option>
+        <option value="kmp"> </option>
+        <option value="bm"> </option>
+    </datalist>
+
     <form name = "inputform" id="inputform" action = "<?php $_PHP_SELF ?>" method = "GET">
         UserInput: <input type = "text" name = "userInput" /><br>
         <input type = "submit" id = "submitButton" />
