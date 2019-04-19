@@ -76,6 +76,7 @@ intentStrategyCursor2 = intentStrategyDB2.find() #points to first entry
 #print(intentStrategy)
 #regex func:
 
+threshold = 0.9
 def stringMatch(message, algoType):
     message = message.replace("%20"," ")
     print("MESSAGE GOTTEN:",message)
@@ -105,7 +106,8 @@ def stringMatch(message, algoType):
         #reset cursor:
         intentStrategyCursor2.rewind()
         #return result:
-        return max[1]
+        if max[0]> 0.9:
+            return max[1]
     
     #not matched at all
     return None
