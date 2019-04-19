@@ -139,10 +139,13 @@ api = Api(app)
 
 class backEnd(Resource):
     def get(self, userInput, algoType):
+        """
         try:
-            return handleReply(stringMatch(userInput, algoType)), 200
+            
         except:
-            return "ERROR!", 404
+            return "ERROR!", 404"""
+    
+        return handleReply(stringMatch(userInput, algoType)), 200
 
     def post(self, userInput, algoType):
         try:
