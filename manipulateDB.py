@@ -19,7 +19,7 @@ intentStrategyDB = nlpData["intentStrategy"] #intent-expression dict:
 intentStrategyDB2 = nlpData["intentStrategy2"] #intent-expression for KMP&BM dict:
 replyStrategyDB = nlpData["replyStrategy"] #intent-reply dict:
 
-intentStrategyDB2.delete_many({"intent" : "greet"})
+intentStrategyDB2.delete_many({})
 intentStrategy2IN1 = {
     "intent"    :   "greet",
     "patterns"   :   ( "halo, siapa namamu?",

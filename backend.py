@@ -96,7 +96,7 @@ def stringMatch(message, algoType):
         for intent in intentStrategyCursor2:
             # DEBUGGER: print("test1:" ,intent)
             for pattern in intent["patterns"]:
-                # DEBUGGER: print("test:" ,regex)
+                print("intent:", intent, "test:" ,pattern)
                 temp = BoyerMooreMatching(message, pattern)
                 if temp > max[0]:
                     print( temp , " >< ", max[0])
@@ -106,8 +106,9 @@ def stringMatch(message, algoType):
         #reset cursor:
         intentStrategyCursor2.rewind()
         #return result:
-        if max[0]> 0.9:
-            return max[1]
+        return max[1]
+        #if max[0]> 0.9:
+            #return max[1]
     
     #not matched at all
     return None

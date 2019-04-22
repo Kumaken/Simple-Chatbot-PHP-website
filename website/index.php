@@ -106,18 +106,18 @@
         }
         else{
             echo nl2br("\r\nNew diksi! LEARNED!\r\n");
-            echo '<pre>'; print_r($data_arr0); echo '</pre>';
+            //echo '<pre>'; print_r($data_arr0); echo '</pre>';
             //echo empty($data_arr0);
             //echo empty($data_arr0) == true;
             if($isRegex == 1){
-                echo nl2br("entered here: REGEX");
+                //echo nl2br("entered here: REGEX");
                 $newIntentStrat["intent"] = $_POST["intent"];
                 $newIntentStrat["regexes"] = $data_arr;
                 $jsonIntentStrat= json_encode($newIntentStrat);
                 $post_URL='api/post/intentStrategy';
             }
             else{
-                echo nl2br("entered here: BM/KMP");
+                //echo nl2br("entered here: BM/KMP");
                 $newIntentStrat["intent"] = $_POST["intent"];
                 $newIntentStrat["patterns"] = $data_arr0;
                 $jsonIntentStrat= json_encode($newIntentStrat);
