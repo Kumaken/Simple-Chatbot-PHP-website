@@ -107,8 +107,8 @@ def stringMatch(message, algoType):
         intentStrategyCursor2.rewind()
         #return result:
         return max[1]
-        #if max[0]> 0.9:
-            #return max[1]
+        if max[0]> 0.9:
+            return max[1]
     
     #not matched at all
     return None
