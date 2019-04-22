@@ -151,25 +151,25 @@ class backEnd(Resource):
         return handleReply(stringMatch(userInput, algoType)), 200
 
     def post(self, userInput, algoType):
-        try:
-            data = request.get_json()
-            print(data)
-            if userInput == "intentStrategy":
-                print("inserted intent")
-                intentStrategyDB.insert_one(data)
-            elif userInput == "intentStrategy2":
-                intentStrategyDB2.insert_one(data)
-            else: #replyStrategy
-                print("inserted reply")
-                if replyStrategyDB.find_one({"intent" : data["intent"]}) != None:
-                    for reply in data["replies"]:
-                        replyStrategyDB.update_one({'intent': data["intent"]}, {'$push': {'replies': reply }}, upsert=True)
-                else:
-                    replyStrategyDB.insert_one(data)
+        #try:
+        data = request.get_json()
+        print(data)
+        if userInput == "intentStrategy":
+            print("inserted intent")
+            intentStrategyDB.insert_one(data)
+        elif userInput == "intentStrategy2":
+            intentStrategyDB2.insert_one(data)
+        else: #replyStrategy
+            print("inserted reply")
+            if replyStrategyDB.find_one({"intent" : data["intent"]}) != None:
+                for reply in data["replies"]:
+                    replyStrategyDB.update_one({'intent': data["intent"]}, {'$push': {'replies': reply }}, upsert=True)
+            else:
+                replyStrategyDB.insert_one(data)
             
-            return "POST success", 200
-        except:
-            return "eh?!", 404
+        return "POST success", 200
+        #except:
+        #return "eh?!", 404
     
     def put(self, userInput, algoType):
         #try:
