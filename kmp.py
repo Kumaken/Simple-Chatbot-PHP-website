@@ -38,11 +38,33 @@ def computeFail(pattern):
 
 	return fail
 
-print("KMP : ")
-text = input()
-pattern = "hai"
-pos = KMP(text, pattern)
-if (pos == -1):
-	print("ngomong apa sih??")
-else:
-	print("Mau ngomong apa?")
+def KMPFail(text, pattern):
+	n = len(text)
+	m = len(pattern)
+	p = pattern.split(" ")
+	t = text
+	percent = 0
+	res = 0;
+
+	for i in p:
+		res = KMP(text, i)
+		if (res != -1):
+			percent = percent + len(i) + 1
+			if len(t) > res :
+				t = t[0: 0:] + t[res + 1::]
+	print (percent)
+	return percent/len(pattern)
+		
+	
+
+
+def kmpcall(text,pattern):
+	#print("KMP : ")
+	#text = input()
+	#pattern = "hai kamu cantik"
+	pos = KMP(text, pattern)
+	if (pos == -1):
+		print("salah")
+		return KMPFail(text, pattern)
+	else:
+		return 1

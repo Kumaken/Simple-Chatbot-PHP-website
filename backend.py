@@ -16,6 +16,7 @@ import sys
 #algorithm inclueds:
 #BOYERMORE:
 from BoyerMoore import BoyerMooreMatching,BuildLast
+from kmp import kmpcall
 
 #setup mongodb:
 myclient =pymongo.MongoClient("mongodb+srv://randomguy:test123@vueexpress-miieb.mongodb.net/test?retryWrites=true")
@@ -97,7 +98,10 @@ def stringMatch(message, algoType):
             # DEBUGGER: print("test1:" ,intent)
             for pattern in intent["patterns"]:
                 print("intent:", intent, "test:" ,pattern)
-                temp = BoyerMooreMatching(message, pattern)
+                if(algoType == "bm"):
+                    temp = BoyerMooreMatching(message, pattern)
+                elif (algoType == "kmp"):
+                    temp = kmpcall(message, pattern)
                 if temp > max[0]:
                     print( temp , " >< ", max[0])
                     #switch intent & percentage of likeliness:
