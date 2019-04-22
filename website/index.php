@@ -39,10 +39,13 @@
     //echo nl2br("\r\nBodoh!\r\n");
    }*/
 
-    if( $_POST["intent"] && ($_POST["regexes"] || $_POST["patterns"])  && $_POST["replies"] ) {
+    if( $_POST["intent"] && $_POST["regexes"] || $_POST["patterns"]  && $_POST["replies"] ) {
         //intent:
         //echo $_POST["intent"];
-
+        if($_POST["patterns"] == "")
+            $isRegex = 1;
+        else
+            $isRegex = 0;
         //for patterns:
         $data = $_POST["patterns"];
         $data_arr0 = explode(',', $data); // explode the string from commas
@@ -68,7 +71,7 @@
 
         if ($intentFound == "true\n"){
             echo nl2br("Menambah ke existing diction! DONE!");
-            if(empty($data_arr0)){
+            if($isRegex == 1){
                 //untuk dict1:
                 $finalData["newRegexes"] = $data_arr;
                 $finalData["newReplies"] = $data_arr2;
@@ -103,17 +106,22 @@
         }
         else{
             echo nl2br("\r\nNew diksi! LEARNED!\r\n");
-            if(empty($data_arr0)){
+            echo '<pre>'; print_r($data_arr0); echo '</pre>';
+            //echo empty($data_arr0);
+            //echo empty($data_arr0) == true;
+            if($isRegex == 1){
+                echo nl2br("entered here: REGEX");
                 $newIntentStrat["intent"] = $_POST["intent"];
                 $newIntentStrat["regexes"] = $data_arr;
                 $jsonIntentStrat= json_encode($newIntentStrat);
-                $post_URL='api/intentStrategy';
+                $post_URL='api/post/intentStrategy';
             }
             else{
+                echo nl2br("entered here: BM/KMP");
                 $newIntentStrat["intent"] = $_POST["intent"];
                 $newIntentStrat["patterns"] = $data_arr0;
                 $jsonIntentStrat= json_encode($newIntentStrat);
-                $post_URL='api/intentStrategy2';
+                $post_URL='api/post/intentStrategy2';
             }
             $newReplyStrat["intent"] = $_POST["intent"];
             $newReplyStrat["replies"] = $data_arr2;
@@ -133,7 +141,7 @@
 
             //post reply strat: 
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $base_url.'api/replyStrategy');
+            curl_setopt($ch, CURLOPT_URL, $base_url.'api/post/replyStrategy');
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS,$jsonReplyStrat);
