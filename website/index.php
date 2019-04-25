@@ -7,6 +7,7 @@
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
+    <form name = "inputform" id="inputform" action = "<?php $_PHP_SELF ?>" method = "GET">
         <div class = "Bot">
 			<img class = "square" src="resource/renito.png" />
 		</div>
@@ -14,12 +15,14 @@
 		<div class = "Chatbox" >
 			<div class = "Dialog" id ="Dialog">
                 <span style="float: left">You:</span><br>
-                <span style="float: left">nununu</span><br>
+                <span style="float: left">Where am I?</span><br>
                 <span style="float: right">RenitoBot:</span><br>
-                <span style="float: right">HEY LO</span><br>
+                <span style="float: right">HEY LO, I'm Renito yo! Salam kenal yo, sini sama aku yo!</span><br>
                 
-			</div>
-		</div>
+            </div>
+            <label class = "inputLabel">UserInput: </label><input class= "inputBox" style="width:325px;height:50px" type = "text" name = "userInput" /><br>
+            <input class = "submitButton" type = "submit" id = "submitButton" />
+        </div>
 		
 	<div class = "wrapper">
 	    <label>Which Algorithm:</label>
@@ -31,13 +34,14 @@
 	    </datalist>
 
         <br><br>
-	    <form name = "inputform" id="inputform" action = "<?php $_PHP_SELF ?>" method = "GET">
-	        UserInput: <input style="width:325px;height:50px" type = "text" name = "userInput" /><br>
-	        <input type = "submit" id = "submitButton" />
+	    
+	       
+	        
 	    </form>
 	    Renito ANSWER: <label id ="answer">-</label>
 	    <br>
-	    <form name = "teachform" id="teachform" action = "<?php $_PHP_SELF ?>" method = "POST">
+        <form name = "teachform" id="teachform" action = "<?php $_PHP_SELF ?>" method = "POST">
+            <label><h2 id ="answer" style="font-size : 50px>" > RENITO'S TEACHING SESSION <br> BEGINS:</h1><br> </label>
 	        <label>Intent:</label><input id="intent" type="text" name="intent" value=""><br><br>
 	        <label id ="regexlabel">Regexes:</label><input id="regexes" type="text" name="regexes"><br><br>
 	        <label id ="patternlabel">Patterns:</label><input id="patterns" type="text" name="patterns" value=""><br><br>

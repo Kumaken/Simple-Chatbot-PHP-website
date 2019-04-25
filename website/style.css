@@ -107,3 +107,23 @@ body{
 .chatbot .chat-message{
 	background: #1adda4;
 }
+
+.inputBox {
+	position:absolute;
+	bottom: 20px;
+	left:13px;
+}
+
+.inputLabel {
+	position:absolute;
+	bottom: 45px;
+	right:13px;
+	font-family : tahoma, sans-serif;
+	font-size : 30px;
+}
+
+.submitButton {
+	position:absolute;
+	bottom: 20px;
+	right:13px;
+}
