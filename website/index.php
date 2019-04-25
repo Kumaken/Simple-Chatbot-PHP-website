@@ -4,30 +4,47 @@
     <title>RenitoBot</title>
     <script src="jquery.js"></script> <!--include this first! or jquery won't work!-->
     <script src="handler.js"></script>
+    <link href="style.css" rel="stylesheet" />
 </head>
 <body>
+        <div class = "Bot">
+			<img class = "square" src="resource/renito.png" />
+		</div>
+		
+		<div class = "Chatbox" >
+			<div class = "Dialog" id ="Dialog">
+                <span style="float: left">You:</span><br>
+                <span style="float: left">nununu</span><br>
+                <span style="float: right">RenitoBot:</span><br>
+                <span style="float: right">HEY LO</span><br>
+                
+			</div>
+		</div>
+		
+	<div class = "wrapper">
+	    <label>Which Algorithm:</label>
+	    <input list="algo" type="text" id="algopick">
+	    <datalist id="algo">
+	        <option value="regex"> </option>
+	        <option value="kmp"> </option>
+	        <option value="bm"> </option>
+	    </datalist>
 
-    <label>Which Algorithm:</label>
-    <input list="algo" type="text" id="algopick">
-    <datalist id="algo">
-        <option value="regex"> </option>
-        <option value="kmp"> </option>
-        <option value="bm"> </option>
-    </datalist>
-
-    <form name = "inputform" id="inputform" action = "<?php $_PHP_SELF ?>" method = "GET">
-        UserInput: <input type = "text" name = "userInput" /><br>
-        <input type = "submit" id = "submitButton" />
-    </form>
-    Renito ANSWER: <label id ="answer">-</label>
-    <br>
-    <form name = "teachform" id="teachform" action = "<?php $_PHP_SELF ?>" method = "POST">
-        <label>Intent:</label><input id="intent" type="text" name="intent"><br><br>
-        <label id ="regexlabel">Regexes:</label><input id="regexes" type="text" name="regexes"><br><br>
-        <label id ="patternlabel">Patterns:</label><input id="patterns" type="text" name="patterns"><br><br>
-        <label>Replies:</label><input id="replies" type="text" name="replies"> 
-        <input type = "submit" id = "submitButton" /><br>
-    </form>
+        <br><br>
+	    <form name = "inputform" id="inputform" action = "<?php $_PHP_SELF ?>" method = "GET">
+	        UserInput: <input style="width:325px;height:50px" type = "text" name = "userInput" /><br>
+	        <input type = "submit" id = "submitButton" />
+	    </form>
+	    Renito ANSWER: <label id ="answer">-</label>
+	    <br>
+	    <form name = "teachform" id="teachform" action = "<?php $_PHP_SELF ?>" method = "POST">
+	        <label>Intent:</label><input id="intent" type="text" name="intent" value=""><br><br>
+	        <label id ="regexlabel">Regexes:</label><input id="regexes" type="text" name="regexes"><br><br>
+	        <label id ="patternlabel">Patterns:</label><input id="patterns" type="text" name="patterns" value=""><br><br>
+	        <label>Replies:</label><input id="replies" type="text" name="replies"> 
+	        <input type = "submit" id = "submitButton" /><br>
+	    </form>
+	</div>
 </body>
 </html>
 
@@ -63,7 +80,7 @@
         //echo '<pre>'; print_r($data_arr2); echo '</pre>';
         
         $intentQueryURL = $base_url.'query/'.urlencode($_POST["intent"]);
-        //echo nl2br("$intentQueryURL\r\n");
+        echo nl2br("$intentQueryURL\r\n");
         $intentFound = file_get_contents($intentQueryURL);
         //echo $intentFound;
         

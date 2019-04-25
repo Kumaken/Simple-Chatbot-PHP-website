@@ -103,14 +103,14 @@ def stringMatch(message, algoType):
                 elif (algoType == "kmp"):
                     temp = kmpcall(message, pattern)
                 if temp > max[0]:
-                    print( temp , " >< ", max[0])
+                    print( temp , " > ", max[0])
                     #switch intent & percentage of likeliness:
                     max[0] = temp
                     max[1] = intent["intent"]
         #reset cursor:
         intentStrategyCursor2.rewind()
         #return result:
-        if max[0]> 0.9:
+        if max[0]>= 0.7:
             return max[1]
     
     #not matched at all

@@ -1,0 +1,109 @@
+html {
+	background: url(resource/bck.jpg);
+	background-size: cover;
+	background-position: center;
+}
+
+body{
+	display: flex;
+}
+
+.Bot {
+	position:absolute;
+	top:0;
+	right:0;
+	width: 50%;
+	margin: auto;
+}
+
+.Bot img{
+	position:absolute;
+	top:0;
+	right:0;
+	height: 300px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.Chatbox{
+	position:absolute;
+	top:30px;
+	right:350px;
+	background: url(resource/cht_box.jpg);
+	background-size: cover;
+	height: 500px;
+	width: 500px;
+
+}
+
+.Dialog{
+	position:absolute;
+	top: 20px;
+	right:13px;
+	background: url(resource/dialog.jpg);
+	background-size: cover;
+	height: 375px;
+	width: 95%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.Dialog::-webkit-scrollbar{
+	width: 10px;
+}
+
+.Dialog::-webkit-scrollbar-thumb{
+	background:rgba(0,0,0,.1);
+	border-radius: 5px;
+}
+
+.Form{
+	position: relative;
+	width: 95%;
+	margin: 10px auto;
+}
+
+.Chatbox #inputform {
+	display: block;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto; 
+}
+
+.algo {
+	position: center;
+	width: 150px;
+	margin : 5% auto;
+	justify-content: space-between;
+	display: flex;
+	align-items: center;
+}
+
+.chat{
+	display: flex;
+	flex-direction: column;;
+	align-items: flex-start;
+	margin: 10px 10px 10px 10px;
+}
+
+.chat .chat-message{
+	padding : 15px;
+	width : 80%;
+	background : #1ddced;
+	margin : 0px 0px 0px 0px;
+	border-radius : 20px;
+	word-wrap : break-word;
+	font-size : 15px;
+	font-family : tahoma, sans-serif;
+	color : #fff;
+}
+
+.self .chat-message{
+	margin-left: auto;
+	background : #30a2fe;
+}
+
+.chatbot .chat-message{
+	background: #1adda4;
+}
